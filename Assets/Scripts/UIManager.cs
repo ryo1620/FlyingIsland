@@ -17,6 +17,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     public GameObject showHintPanel;
     public GameObject errorPanel;
     public GameObject soundPanel;
+    public GameObject askPanel;
     public GameObject howToPanel;
 
     // 表示させるアイテム（大）を取得        
@@ -49,6 +50,16 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
     // PlayerPrefsで使用するキー
     const string SAVE_BGM_KEY = "BGM";
     const string SAVE_SE_KEY = "SE";
+    const string SAVE_KEY = "SAVE_DATA";
+
+    // 遊び方の解説画面におけるゲームオブジェクトを取得する
+    public GameObject howToUITop;
+    public GameObject howToNextButton;
+    public GameObject howToBeforeButton;
+    public GameObject[] howToContents;
+
+    // 遊び方の解説画面におけるページ数を操作するための変数    
+    int howToPageCount = 0;
 
     void Start()
     {
@@ -75,6 +86,15 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         bgmAudioSource = bgm.GetComponent<AudioSource>();
 
         SetItemWindowSize();
+
+        // セーブデータがない場合、遊び方を見るかどうか確認する
+        if (PlayerPrefs.HasKey(SAVE_KEY) == false)
+        {
+            HideMainUI();
+            askPanel.SetActive(true);
+        }
+
+        SetItemWhindowSize();
     }
 
     // アスペクト比が3:5よりも横長であればアイテムウィンドウのサイズを小さくする
@@ -213,6 +233,7 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         SEManager.Instance.PlaySE(SEManager.Instance.cancel);
         howToPanel.SetActive(false);
         menuPanel.SetActive(true);
+        SetHowToContentDefault();
     }
 
     // タイトルに戻るかどうか確認する画面において「いいえ」を押したときの処理
@@ -233,8 +254,8 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         menuPanel.SetActive(true);
     }
 
-    // ヒントを表示する画面において「ゲーム画面に戻る」を押したときの処理
-    public void OnReturnToGameInShowHintPanel()
+    // ヒントを表示する画面において「閉じる」を押したときの処理
+    public void OnCloseInShowHintPanel()
     {
         SEManager.Instance.PlaySE(SEManager.Instance.cancel);
         SetHintAdShownToFalse();
@@ -242,8 +263,8 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         ShowMainUI();
     }
 
-    // エラー画面において「ゲーム画面に戻る」を押したときの処理
-    public void OnReturnToGameInErrorPanel()
+    // エラー画面において「閉じる」を押したときの処理
+    public void OnCloseInErrorPanel()
     {
         SEManager.Instance.PlaySE(SEManager.Instance.cancel);
         errorPanel.SetActive(false);
@@ -311,6 +332,86 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         SEManager.Instance.TurnOffSE();
     }
 
+    // 遊び方を見るかどうか確認する画面で「はい」を押したときの処理
+    public void OnYesInAskPanel()
+    {
+        // 初回の遊び方の解説画面では戻るボタンを非表示にする
+        howToUITop.SetActive(false);
+        SEManager.Instance.PlaySE(SEManager.Instance.select);
+        askPanel.SetActive(false);
+        howToPanel.SetActive(true);
+    }
+
+    // 遊び方を見るかどうか確認する画面で「いいえ」を押したときの処理
+    public void OnNoInAskPanel()
+    {
+        SEManager.Instance.PlaySE(SEManager.Instance.cancel);
+        askPanel.SetActive(false);
+        ShowMainUI();
+    }
+
+    // 遊び方画面で「次へ」を押したときの処理
+    public void OnNextInHowToPanel()
+    {
+        SEManager.Instance.PlaySE(SEManager.Instance.select);
+        howToContents[howToPageCount].SetActive(false);
+        howToPageCount += 1;
+        howToContents[howToPageCount].SetActive(true);
+
+        if (howToPageCount == 1)
+        {
+            howToBeforeButton.SetActive(true);
+        }
+        if (howToPageCount == 4)
+        {
+            howToNextButton.SetActive(false);
+        }
+    }
+
+    // 遊び方画面で「前へ」を押したときの処理
+    public void OnBeforeInHowToPanel()
+    {
+        SEManager.Instance.PlaySE(SEManager.Instance.cancel);
+        howToContents[howToPageCount].SetActive(false);
+        howToPageCount -= 1;
+        howToContents[howToPageCount].SetActive(true);
+
+        if (howToPageCount == 0)
+        {
+            howToBeforeButton.SetActive(false);
+        }
+        if (howToPageCount == 3)
+        {
+            howToNextButton.SetActive(true);
+        }
+    }
+
+    // 遊び方画面で「閉じる」を押したときの処理
+    public void OnCloseInHowToPanel()
+    {
+        SEManager.Instance.PlaySE(SEManager.Instance.cancel);
+        howToPanel.SetActive(false);
+        ShowMainUI();
+        if (howToUITop.activeSelf == false)
+        {
+            howToUITop.SetActive(true);
+        }
+        SetHowToContentDefault();
+    }
+
+    // 遊び方画面の状態を初期化する処理
+    void SetHowToContentDefault()
+    {
+        howToPageCount = 0;
+        howToContents[0].SetActive(true);
+        for (int i = 1; i <= 4; i++)
+        {
+            howToContents[i].SetActive(false);
+        }
+        howToBeforeButton.SetActive(false);
+        howToNextButton.SetActive(true);
+    }
+
     // アイテムウィンドウを表示させる関数
     public void ShowItemWindow(GameObject item)
     {
@@ -358,6 +459,17 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         {
             stoneKey00.SetActive(true);
             stoneKey01.SetActive(false);
+        }
+    }
+
+    // デバイスのアスペクト比によってアイテムウィンドウのサイズを変える
+    void SetItemWhindowSize()
+    {
+        float aspectRatio = (float)Screen.width / (float)Screen.height;
+        if (aspectRatio > 0.65f)
+        {
+            itemPanel.transform.localPosition = new Vector3(4, 0, 0);
+            itemPanel.GetComponent<RectTransform>().sizeDelta = new Vector2(408, 408);
         }
     }
 }
