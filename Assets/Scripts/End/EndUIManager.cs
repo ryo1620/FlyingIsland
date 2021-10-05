@@ -25,7 +25,15 @@ public class EndUIManager : MonoBehaviour
 
     public void OnDoNotReview()
     {
+        DestroyAds();
         TitleSEManager.Instance.SoundStart();
         EndFadeManager.Instance.FadeOutScene();
+    }
+
+    // AdMobの広告を削除する
+    void DestroyAds()
+    {
+        EndAdTop.Instance.Destroy();
+        EndAdBottom.Instance.Destroy();
     }
 }

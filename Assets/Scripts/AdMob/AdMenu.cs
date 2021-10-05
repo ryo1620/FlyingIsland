@@ -3,7 +3,7 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using System.Runtime.InteropServices;
 
-public class AdMenu : MonoBehaviour
+public class AdMenu : SingletonMonoBehaviour<AdMenu>
 {
     private BannerView bannerView;
 
@@ -42,21 +42,6 @@ public class AdMenu : MonoBehaviour
         }
     }
 
-    public void Destroy()
-    {
-        this.bannerView.Destroy();
-    }
-
-    public void Show()
-    {
-        this.bannerView.Show();
-    }
-
-    public void Hide()
-    {
-        this.bannerView.Hide();
-    }
-
     private void RequestBanner()
     {
 #if UNITY_ANDROID
@@ -68,7 +53,7 @@ public class AdMenu : MonoBehaviour
         // Clean up banner ad before creating a new one.
         if (this.bannerView != null)
         {
-            this.bannerView.Destroy();
+            Destroy();
         }
 
 #if UNITY_ANDROID
@@ -128,6 +113,23 @@ public class AdMenu : MonoBehaviour
         this.bannerView.LoadAd(request);
     }
 
+    public void Destroy()
+    {
+        this.bannerView.Destroy();
+    }
+
+    public void Show()
+    {
+        this.bannerView.Show();
+    }
+
+    public void Hide()
+    {
+        this.bannerView.Hide();
+    }
+
+    #region Banner callback handlers
+
     public void HandleOnAdLoaded(object sender, EventArgs args)
     {
         // 一定時間ごとにリロードを行うときに判定するための変数
@@ -160,4 +162,6 @@ public class AdMenu : MonoBehaviour
         MonoBehaviour.print("HandleAdLeavingApplication event received");
     }
     */
+
+    #endregion
 }

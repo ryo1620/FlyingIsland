@@ -2,7 +2,7 @@
 using UnityEngine;
 using GoogleMobileAds.Api;
 
-public class AdTop : MonoBehaviour
+public class AdTop : SingletonMonoBehaviour<AdTop>
 {
     // Titleシーンからの切替時にTitleFadeManager.csで呼び出されるのでpublicにしておく
     public BannerView bannerView;
@@ -43,11 +43,6 @@ public class AdTop : MonoBehaviour
         }
     }
 
-    public void Destroy()
-    {
-        this.bannerView.Destroy();
-    }
-
     private void RequestBanner()
     {
 #if UNITY_ANDROID
@@ -59,7 +54,7 @@ public class AdTop : MonoBehaviour
         // Clean up banner ad before creating a new one.
         if (this.bannerView != null)
         {
-            this.bannerView.Destroy();
+            Destroy();
         }
 
         // 縦画面におけるアダプティブバナーのサイズを取得する
@@ -80,6 +75,11 @@ public class AdTop : MonoBehaviour
 
         // Load a banner ad.
         this.bannerView.LoadAd(adRequest);
+    }
+
+    public void Destroy()
+    {
+        this.bannerView.Destroy();
     }
 
     #region Banner callback handlers

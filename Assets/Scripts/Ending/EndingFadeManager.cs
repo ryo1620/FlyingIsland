@@ -2,11 +2,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
-public class EndingFadeManager : MonoBehaviour
+public class EndingFadeManager : SingletonMonoBehaviour<EndingFadeManager>
 {
     // フェードにかかる時間        
-    public readonly float fadeInSceneTime = 2.0f;
+    public readonly float fadeInSceneTime = 1.0f;
     public readonly float fadeOutSceneTime = 2.0f;
 
     // フェードに使った時間
@@ -20,17 +21,36 @@ public class EndingFadeManager : MonoBehaviour
 
     // MovieのVideoPlayerとAudioSource
     public GameObject movie;
+    VideoPlayer videoPlayer;
     AudioSource bgmAudioSource;
 
     private void Start()
     {
         fadeInImage = fadeInPanel.GetComponent<Image>();
         fadeOutImage = fadeOutPanel.GetComponent<Image>();
+        videoPlayer = movie.GetComponent<VideoPlayer>();
         bgmAudioSource = movie.GetComponent<AudioSource>();
+
+        // 読込完了時のコールバックを設定
+        videoPlayer.prepareCompleted += OnCompletePrepare;
+        // 動画の読込開始
+        videoPlayer.Prepare();
+    }
+
+    // 動画の読込完了時のコールバック
+    void OnCompletePrepare(VideoPlayer player)
+    {
+        PlayMovie();
         PlayBgm();
         FadeInScene();
+
         // エンディングが26秒なので、24秒後にフェードアウトを開始する
         Invoke(nameof(FadeOutScene), 24.0f);
+    }
+
+    void PlayMovie()
+    {
+        videoPlayer.Play();
     }
 
     void PlayBgm()
@@ -47,6 +67,9 @@ public class EndingFadeManager : MonoBehaviour
 
     IEnumerator FadeInSceneCoroutine()
     {
+        // 自動スリープを無効にする
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+
         // 色の不透明度
         float alpha = 1;
         // Imageの色変更に使う
@@ -114,6 +137,9 @@ public class EndingFadeManager : MonoBehaviour
 
         // エンディング後のシーンに遷移する
         SceneManager.LoadScene("End");
+
+        // 自動スリープを有効にする
+        Screen.sleepTimeout = SleepTimeout.SystemSetting;
     }
 
     void FadeInScene()

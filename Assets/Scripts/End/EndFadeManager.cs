@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class EndFadeManager : SingletonMonoBehaviour<EndFadeManager>
 {
     // フェードにかかる時間        
-    public readonly float fadeInSceneTime = 1.0f;
+    public readonly float fadeInSceneTime = 2.0f;
     public readonly float fadeOutSceneTime = 0.6f;
 
     // フェードに使った時間

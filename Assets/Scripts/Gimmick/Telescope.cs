@@ -118,6 +118,11 @@ public class Telescope : MonoBehaviour
             StartCoroutine(this.DelayCoroutine(1.0f, () =>
             {
                 ShowRainbow();
+
+                // エンジンの仕掛けを解けるようにする
+                GimmickFlag.Instance.canSolveEngineStarter = true;
+                SaveManager.Instance.SetCanSolveGimmickFlag(Gimmick.Type.EngineStarter, true);
+
                 // 状態をセーブする
                 SaveManager.Instance.SetSolvedGimmickFlag(Gimmick.Type.Telescope, true);
 

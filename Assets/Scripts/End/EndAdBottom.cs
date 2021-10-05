@@ -2,7 +2,7 @@
 using UnityEngine;
 using GoogleMobileAds.Api;
 
-public class EndAdBottom : MonoBehaviour
+public class EndAdBottom : SingletonMonoBehaviour<EndAdBottom>
 {
     BannerView bannerView;
 
@@ -46,7 +46,7 @@ public class EndAdBottom : MonoBehaviour
         // Clean up banner ad before creating a new one.
         if (this.bannerView != null)
         {
-            this.bannerView.Destroy();
+            Destroy();
         }
 
         // 縦画面におけるアダプティブバナーのサイズを取得する
@@ -67,6 +67,11 @@ public class EndAdBottom : MonoBehaviour
 
         // Load a banner ad.
         this.bannerView.LoadAd(adRequest);
+    }
+
+    public void Destroy()
+    {
+        this.bannerView.Destroy();
     }
 
     #region Banner callback handlers

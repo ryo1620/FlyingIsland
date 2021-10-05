@@ -24,19 +24,10 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
     // BgmのAudioSource用の変数を宣言する
     AudioSource bgmAudioSource;
 
-    // フェードイン後に広告を表示させるためにオブジェクトを取得する
-    public GameObject adTop;
-    public GameObject adBottom;
-    // 広告のスクリプト用の変数を宣言する
-    AdTop adTopScript;
-    AdBottom adBottomScript;
-
     void Start()
     {
         fadeImage = GetComponent<Image>();
         bgmAudioSource = bgm.GetComponent<AudioSource>();
-        adTopScript = adTop.GetComponent<AdTop>();
-        adBottomScript = adBottom.GetComponent<AdBottom>();
     }
 
     IEnumerator FadeInSceneCoroutine()
@@ -85,14 +76,14 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         while (this.fadeDeltaTime <= this.fadeInSceneTime);
 
         // Titleシーンで広告がロードされていれば表示させる
-        if (adTopScript.adLoaded == true)
+        if (AdTop.Instance.adLoaded == true)
         {
-            adTopScript.bannerView.Show();
+            AdTop.Instance.bannerView.Show();
         }
 
-        if (adBottomScript.adLoaded == true)
+        if (AdBottom.Instance.adLoaded == true)
         {
-            adBottomScript.bannerView.Show();
+            AdBottom.Instance.bannerView.Show();
         }
 
         fadeImage.enabled = false;
@@ -215,9 +206,9 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
     // BGMの音量を徐々に上げる
     IEnumerator TurnUpCoroutine()
     {
-        while (bgmAudioSource.volume < 0.5f)
+        while (bgmAudioSource.volume < 1.0f)
         {
-            bgmAudioSource.volume += 0.05f;
+            bgmAudioSource.volume += 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -225,9 +216,9 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
     // BGMの音量を徐々に下げる
     IEnumerator TurnDownCoroutine()
     {
-        while (bgmAudioSource.volume > 0.2f)
+        while (bgmAudioSource.volume > 0.4f)
         {
-            bgmAudioSource.volume -= 0.05f;
+            bgmAudioSource.volume -= 0.1f;
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -237,7 +228,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
     {
         while (bgmAudioSource.volume > 0)
         {
-            bgmAudioSource.volume -= 0.025f;
+            bgmAudioSource.volume -= 0.05f;
             yield return new WaitForSeconds(0.1f);
         }
     }
@@ -323,9 +314,18 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
     // エンディングムービーに入るときのフェードアウト
     IEnumerator FadeOutEndingCoroutine()
     {
+        DestroyAds();
         FadeOutPanel();
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime + 1.0f);
         SceneManager.LoadScene("Ending");
+    }
+
+    // AdMobの広告を削除する
+    void DestroyAds()
+    {
+        AdTop.Instance.Destroy();
+        AdBottom.Instance.Destroy();
+        AdMenu.Instance.Destroy();
     }
 
     // 外部から呼び出される関数

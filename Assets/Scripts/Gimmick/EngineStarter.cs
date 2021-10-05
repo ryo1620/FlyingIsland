@@ -71,7 +71,7 @@ public class EngineStarter : MonoBehaviour
     // 正誤判定する
     bool IsCorrect()
     {
-        if (currentColors[0] == Color.Red && currentColors[1] == Color.Yellow && currentColors[2] == Color.Blue && currentColors[3] == Color.Purple)
+        if (GimmickFlag.Instance.canSolveEngineStarter == true && currentColors[0] == Color.Red && currentColors[1] == Color.Yellow && currentColors[2] == Color.Blue && currentColors[3] == Color.Purple)
         {
             return true;
         }

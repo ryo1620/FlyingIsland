@@ -23,7 +23,7 @@ public class Gimmick : MonoBehaviour
         CrateStoneKey,
         Device,
         StoneHolder,
-        AirPlane,
+        EngineStarter,
         Total,
     }
 }
