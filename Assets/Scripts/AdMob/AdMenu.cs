@@ -19,8 +19,15 @@ public class AdMenu : SingletonMonoBehaviour<AdMenu>
     public GameObject menuPanel;
 
     // RetinaScale.mm内に記述したObjective-C++の関数を定義する
+    // IL2CPPによるビルドでエラーが発生するので条件分岐させる
+    // 参考：https://www.fixes.pub/program/225023.html
+#if UNITY_WEBGL
     [DllImport("__Internal")]
     private static extern float getRetinaScale();
+#else
+    [DllImport("RetinaScale.mm")]
+    private static extern float getRetinaScale();
+#endif
 
     void Start()
     {
@@ -80,7 +87,7 @@ public class AdMenu : SingletonMonoBehaviour<AdMenu>
         float x = screenHalfWidth - adHalfWidth;
 
         float y = MaxResolution.GetDefaultHeight() / getRetinaScale() / 2.0f;
-#endif        
+#endif
 
         // Create a 300x250 banner at the top of the screen.
         this.bannerView = new BannerView(adUnitID, AdSize.MediumRectangle, (int)x, (int)y);
