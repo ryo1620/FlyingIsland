@@ -1,7 +1,8 @@
 {
     "name": "GoogleMobileAds.Editor",
     "references": [
-        "GoogleMobileAds"
+        "GoogleMobileAds",
+        "GoogleMobileAds.Core"
     ],
     "includePlatforms": [
         "Editor"

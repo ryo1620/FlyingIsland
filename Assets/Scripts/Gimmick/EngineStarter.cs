@@ -84,6 +84,9 @@ public class EngineStarter : MonoBehaviour
     // 正解したときの処理
     void SolveGimmick()
     {
+        // インタースティシャル広告を読み込んでおく
+        AdBeforeEnding.Instance.RequestInterstitial();
+
         // 操作の受付を無効にする
         UIManager.Instance.HideMainUI();
         foreach (GameObject collision in collisions)

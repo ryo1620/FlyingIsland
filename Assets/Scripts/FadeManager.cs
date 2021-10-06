@@ -318,6 +318,8 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         FadeOutPanel();
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime + 1.0f);
         SceneManager.LoadScene("Ending");
+        // インタースティシャル広告を表示させる
+        AdBeforeEnding.Instance.ShowInterstitial();
     }
 
     // AdMobの広告を削除する

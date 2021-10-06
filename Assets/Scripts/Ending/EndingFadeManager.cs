@@ -137,9 +137,6 @@ public class EndingFadeManager : SingletonMonoBehaviour<EndingFadeManager>
 
         // エンディング後のシーンに遷移する
         SceneManager.LoadScene("End");
-
-        // 自動スリープを有効にする
-        Screen.sleepTimeout = SleepTimeout.SystemSetting;
     }
 
     void FadeInScene()

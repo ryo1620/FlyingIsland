@@ -15,6 +15,9 @@ public class EndUIManager : MonoBehaviour
     {
         TitleSEManager.Instance.SoundSelect();
         reviewPanel.SetActive(true);
+
+        // 自動スリープを有効にする
+        Screen.sleepTimeout = SleepTimeout.SystemSetting;
     }
 
     public void OnDoReview()
