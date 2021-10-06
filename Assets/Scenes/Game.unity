@@ -26719,7 +26719,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f40efc9828b9445ad790ed8264671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitID: ca-app-pub-3940256099942544/6300978111
+  androidAdUnitID: ca-app-pub-5845244709311243/8213193712
   iosAdUnitID: ca-app-pub-3940256099942544/2934735716
   uiTop:
   - {fileID: 362274196}
@@ -30840,7 +30840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e76bbdd911c6bb940af0c51dabbe188e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitID: ca-app-pub-3940256099942544/6300978111
+  androidAdUnitID: ca-app-pub-5845244709311243/7149208261
   iosAdUnitID: ca-app-pub-3940256099942544/2934735716
   uiBottom: {fileID: 82705930}
   timeToReload: 20
@@ -32606,7 +32606,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d461e89d41ae4245b053a2985ef929e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitID: ca-app-pub-3940256099942544/5224354917
+  androidAdUnitID: ca-app-pub-5845244709311243/3468133497
   iosAdUnitID: ca-app-pub-3940256099942544/1712485313
   menuPanel: {fileID: 75996142}
   hintPanel: {fileID: 710758678}
@@ -34108,7 +34108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a69f6ea127a0cdb41b440dc78ae45204, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitID: ca-app-pub-3940256099942544/6300978111
+  androidAdUnitID: ca-app-pub-5845244709311243/6574493199
   iosAdUnitID: ca-app-pub-3940256099942544/2934735716
   timeToReload: 25
   menuPanel: {fileID: 75996142}
@@ -57011,7 +57011,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 682eaef8401793b4ba83ad9985888723, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitID: ca-app-pub-3940256099942544/3419835294
+  androidAdUnitID: ca-app-pub-5845244709311243/3948329850
   iosAdUnitID: ca-app-pub-3940256099942544/5662855259
   timeToReload: 15
 --- !u!1 &1698320814
@@ -59741,7 +59741,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fcb78ff2013e31418554fb87f79c6d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitID: ca-app-pub-3940256099942544/1033173712
+  androidAdUnitID: ca-app-pub-5845244709311243/5644554908
   iosAdUnitID: ca-app-pub-3940256099942544/4411468910
 --- !u!1 &1782060906
 GameObject:

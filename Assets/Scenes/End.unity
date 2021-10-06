@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 509d92f79017c514c91ee3875acfab0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitID: ca-app-pub-3940256099942544/6300978111
+  androidAdUnitID: ca-app-pub-5845244709311243/6906677449
   iosAdUnitID: ca-app-pub-3940256099942544/2934735716
   timeToReload: 5
 --- !u!4 &188586999
@@ -706,7 +706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 88aef59971ab6b94ca1d870d22a59461, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  androidAdUnitID: ca-app-pub-3940256099942544/6300978111
+  androidAdUnitID: ca-app-pub-5845244709311243/9583799912
   iosAdUnitID: ca-app-pub-3940256099942544/2934735716
   timeToReload: 5
 --- !u!4 &650598312
