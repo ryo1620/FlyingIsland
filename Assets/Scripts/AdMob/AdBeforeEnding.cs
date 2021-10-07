@@ -10,6 +10,30 @@ public class AdBeforeEnding : SingletonMonoBehaviour<AdBeforeEnding>
     public string androidAdUnitID;
     public string iosAdUnitID;
 
+    // 一定時間ごとにリロードを行うための変数    
+    private float elapsedTime;
+    public float timeToReload;
+
+    void Start()
+    {
+        RequestInterstitial();
+    }
+
+    // 一定時間ごとに広告がロードされているかどうか確認し、ロードされていなければ再試行する
+    void Update()
+    {
+        elapsedTime += Time.deltaTime;
+
+        if (elapsedTime >= timeToReload)
+        {
+            elapsedTime = 0.0f;
+            if (this.interstitial.IsLoaded() == false)
+            {
+                RequestInterstitial();
+            }
+        }
+    }
+
     public void ShowInterstitial()
     {
         // インタースティシャル広告の読み込みが完了していれば表示させる

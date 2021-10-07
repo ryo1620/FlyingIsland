@@ -337,7 +337,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
             IEnumerator coroutine = ClimbDownCoroutine();
             StartCoroutine(coroutine);
         }
-        // 橋の周辺、かつ最初のパネル画面では下に降りる
+        // 橋の周辺、かつ最初のパネル画面では湖の前に戻る
         else if (currentPanel == Panel.Bridge && isObjectOnBridge == false)
         {
             IEnumerator coroutine = ReturnFromBridgeCoroutine();
@@ -628,6 +628,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
         ShowPanel(currentPanel);
+        isObjectOnBridge = false;
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 

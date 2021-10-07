@@ -1,15 +1,11 @@
-﻿
+﻿using System.Collections;
 using UnityEngine;
 
 public class EndUIManager : MonoBehaviour
 {
-    // 表示させるUIを取得
+    // 表示させるUIを取得    
     public GameObject reviewPanel;
-
-    void Start()
-    {
-
-    }
+    public GameObject returnToTitle;
 
     public void OnEndBackground()
     {
@@ -18,15 +14,26 @@ public class EndUIManager : MonoBehaviour
 
         // 自動スリープを有効にする
         Screen.sleepTimeout = SleepTimeout.SystemSetting;
+
+        StartCoroutine(RequestReviewCoroutine());
     }
 
-    public void OnDoReview()
+    // レビュー画面の表示後に「タイトル画面に戻る」ボタンを表示させるコルーチン
+    IEnumerator RequestReviewCoroutine()
     {
-        TitleSEManager.Instance.SoundSelect();
-        StoreReviewManager.Instance.RequestReview();
+        // レビュー画面を表示させる
+#if UNITY_ANDROID
+        var requestReviewAndroid = StartCoroutine(StoreReviewManager.Instance.RequestReviewAndroid());
+        yield return requestReviewAndroid;
+#elif UNITY_IOS
+        var requestReviewIos = UnityEngine.iOS.Device.RequestStoreReview();
+        yield return requestReviewIos;
+#endif        
+        // 「タイトル画面に戻る」ボタンを表示させる
+        returnToTitle.SetActive(true);
     }
 
-    public void OnDoNotReview()
+    public void OnReturnToTitle()
     {
         DestroyAds();
         TitleSEManager.Instance.SoundStart();

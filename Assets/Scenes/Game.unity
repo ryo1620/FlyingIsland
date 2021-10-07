@@ -59743,6 +59743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   androidAdUnitID: ca-app-pub-5845244709311243/5644554908
   iosAdUnitID: ca-app-pub-3940256099942544/4411468910
+  timeToReload: 30
 --- !u!1 &1782060906
 GameObject:
   m_ObjectHideFlags: 0
