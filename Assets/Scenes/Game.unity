@@ -26720,7 +26720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   androidAdUnitID: ca-app-pub-5845244709311243/8213193712
-  iosAdUnitID: ca-app-pub-3940256099942544/2934735716
+  iosAdUnitID: ca-app-pub-5845244709311243/1238459935
   uiTop:
   - {fileID: 362274196}
   - {fileID: 966521060}
@@ -30841,7 +30841,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   androidAdUnitID: ca-app-pub-5845244709311243/7149208261
-  iosAdUnitID: ca-app-pub-3940256099942544/2934735716
+  iosAdUnitID: ca-app-pub-5845244709311243/2422198027
   uiBottom: {fileID: 82705930}
   timeToReload: 20
 --- !u!4 &786270579
@@ -32607,14 +32607,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   androidAdUnitID: ca-app-pub-5845244709311243/3468133497
-  iosAdUnitID: ca-app-pub-3940256099942544/1712485313
+  iosAdUnitID: ca-app-pub-5845244709311243/6820608036
   menuPanel: {fileID: 75996142}
   hintPanel: {fileID: 710758678}
   dummyPanel: {fileID: 471906645}
   showHintPanel: {fileID: 1110261505}
   errorPanel: {fileID: 289329349}
   timeToReload: 10
-  adMenu: {fileID: 905907879}
   uiManager: {fileID: 114731184}
   bgm: {fileID: 426357485}
 --- !u!4 &841981646
@@ -34109,7 +34108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   androidAdUnitID: ca-app-pub-5845244709311243/6574493199
-  iosAdUnitID: ca-app-pub-3940256099942544/2934735716
+  iosAdUnitID: ca-app-pub-5845244709311243/7012179728
   timeToReload: 25
   menuPanel: {fileID: 75996142}
 --- !u!4 &905907881
@@ -54964,52 +54963,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1749179802}
-        m_TargetAssemblyTypeName: FadeManager, Assembly-CSharp
-        m_MethodName: FadeOutScene
-        m_Mode: 5
+      - m_Target: {fileID: 114731185}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: OnYesInTitlePanel
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Title
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 691954910}
-        m_TargetAssemblyTypeName: AdTop, Assembly-CSharp
-        m_MethodName: Destroy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 786270578}
-        m_TargetAssemblyTypeName: AdBottom, Assembly-CSharp
-        m_MethodName: Destroy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 905907880}
-        m_TargetAssemblyTypeName: AdMenu, Assembly-CSharp
-        m_MethodName: Destroy
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1606137719
@@ -57012,7 +56975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   androidAdUnitID: ca-app-pub-5845244709311243/3948329850
-  iosAdUnitID: ca-app-pub-3940256099942544/5662855259
+  iosAdUnitID: ca-app-pub-5845244709311243/2881363021
   timeToReload: 15
 --- !u!1 &1698320814
 GameObject:
@@ -59742,7 +59705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   androidAdUnitID: ca-app-pub-5845244709311243/5644554908
-  iosAdUnitID: ca-app-pub-3940256099942544/4411468910
+  iosAdUnitID: ca-app-pub-5845244709311243/4386016382
   timeToReload: 30
 --- !u!1 &1782060906
 GameObject:

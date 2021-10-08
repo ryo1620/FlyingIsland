@@ -62,7 +62,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     {
         PlayLongFootsteps();
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -77,7 +77,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     {
         PlayLongFootsteps();
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -96,7 +96,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
         // BGMの音量を徐々に下げる
         FadeManager.Instance.TurnDown();
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -115,7 +115,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
         // BGMの音量を徐々に元に戻す
         FadeManager.Instance.TurnUp();
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -131,7 +131,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     {
         SEManager.Instance.PlaySE(SEManager.Instance.climb);
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -145,7 +145,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     // 丘から降りるときのコルーチン
     IEnumerator ClimbDownCoroutine()
     {
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -163,7 +163,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     {
         SEManager.Instance.PlaySE(SEManager.Instance.soilShort);
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -183,7 +183,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     {
         PlayLongFootsteps();
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -199,7 +199,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     {
         PlayLongFootsteps();
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -484,7 +484,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     // ゴーレムが削岩したあとフィールド画面に戻るときの処理
     public IEnumerator ReturnToFieldCoroutine()
     {
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -514,7 +514,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     // スコップとオノのロックを解除したときにその前まで移動する処理
     public IEnumerator UnlockCoroutine(Item.Type item)
     {
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -583,7 +583,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     // ピーナッツ使用後に画面移動するときの処理
     public IEnumerator MoveToBirdsEatingCoroutine()
     {
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(0.5f);
 
@@ -606,7 +606,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     // ロープを切ったあとに画面移動するときのコルーチン
     public IEnumerator MoveAfterCuttingRopeCoroutine()
     {
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -623,7 +623,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     {
         StoneHolder.Instance.panelBackgrounds[0].SetActive(true);
 
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -652,7 +652,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     // 網で木箱を引き上げたあとのコルーチン
     IEnumerator ReturnAfterCatchingCrateCoroutine()
     {
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 
@@ -675,7 +675,7 @@ public class PanelChanger : SingletonMonoBehaviour<PanelChanger>
     // オノで木を切り倒したあと画面移動するときのコルーチン
     IEnumerator ReturnAfterCuttingDownTreeCoroutine()
     {
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(0.5f);
 

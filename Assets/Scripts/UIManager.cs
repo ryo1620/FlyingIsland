@@ -236,6 +236,13 @@ public class UIManager : SingletonMonoBehaviour<UIManager>
         SetHowToContentDefault();
     }
 
+    // タイトルに戻るかどうか確認する画面において「はい」を押したときの処理
+    public void OnYesInTitlePanel()
+    {
+        SEManager.Instance.PlaySE(SEManager.Instance.start);
+        FadeManager.Instance.FadeOutTitle();
+    }
+
     // タイトルに戻るかどうか確認する画面において「いいえ」を押したときの処理
     public void OnNoInTitlePanel()
     {

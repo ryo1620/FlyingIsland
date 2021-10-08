@@ -57,11 +57,8 @@ public class AdMenu : SingletonMonoBehaviour<AdMenu>
         string adUnitID = iosAdUnitID;
 #endif
 
-        // Clean up banner ad before creating a new one.
-        if (this.bannerView != null)
-        {
-            Destroy();
-        }
+        // Clean up banner ad before creating a new one.        
+        Destroy();
 
 #if UNITY_ANDROID
         // このゲームではアスペクト比を保ったまま解像度を下げるスクリプトを使っている
@@ -92,16 +89,6 @@ public class AdMenu : SingletonMonoBehaviour<AdMenu>
         // Create a 300x250 banner at the top of the screen.
         this.bannerView = new BannerView(adUnitID, AdSize.MediumRectangle, (int)x, (int)y);
 
-        // menuPanelが表示されていれば広告を表示し、そうでなければ非表示にする
-        if (menuPanel.activeSelf == true)
-        {
-            Show();
-        }
-        else
-        {
-            Hide();
-        }
-
         // Called when an ad request has successfully loaded.
         this.bannerView.OnAdLoaded += this.HandleOnAdLoaded;
         // Called when an ad request failed to load.
@@ -118,21 +105,40 @@ public class AdMenu : SingletonMonoBehaviour<AdMenu>
 
         // Load the banner with the request.
         this.bannerView.LoadAd(request);
+
+        // menuPanelが表示されていれば広告を表示し、そうでなければ非表示にする
+        if (menuPanel.activeSelf == true)
+        {
+            Show();
+        }
+        else
+        {
+            Hide();
+        }
     }
 
     public void Destroy()
     {
-        this.bannerView.Destroy();
+        if (this.bannerView != null)
+        {
+            this.bannerView.Destroy();
+        }
     }
 
     public void Show()
     {
-        this.bannerView.Show();
+        if (this.bannerView != null)
+        {
+            this.bannerView.Show();
+        }
     }
 
     public void Hide()
     {
-        this.bannerView.Hide();
+        if (this.bannerView != null)
+        {
+            this.bannerView.Hide();
+        }
     }
 
     #region Banner callback handlers

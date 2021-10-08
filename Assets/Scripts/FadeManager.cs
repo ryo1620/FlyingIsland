@@ -89,47 +89,6 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         fadeImage.enabled = false;
     }
 
-    IEnumerator FadeOutSceneCoroutine(string nextScene)
-    {
-        SEManager.Instance.PlaySE(SEManager.Instance.start);
-
-        fadeImage.enabled = true;
-
-        // 色の不透明度
-        float alpha = 0;
-        // Imageの色変更に使う
-        Color color = new Color(0, 0, 0, alpha);
-        // 初期化
-        this.fadeDeltaTime = 0;
-        // 色の初期化
-        fadeImage.color = color;
-
-        do
-        {
-            // 次フレームで再開する
-            yield return null;
-            // 時間を加算する
-            this.fadeDeltaTime += Time.unscaledDeltaTime;
-            // 透明度を決める
-            alpha = this.fadeDeltaTime / this.fadeOutSceneTime;
-
-            if (alpha > 1)
-            {
-                // alphaの値を制限する
-                alpha = 1;
-            }
-
-            // 色の透明度を決める
-            color.a = alpha;
-            // 色を代入する
-            fadeImage.color = color;
-        }
-        while (this.fadeDeltaTime <= this.fadeOutSceneTime);
-
-        // 指定されたシーンに遷移する
-        SceneManager.LoadScene(nextScene);
-    }
-
     IEnumerator FadeInPanelCoroutine()
     {
         // 色の不透明度
@@ -166,7 +125,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         fadeImage.enabled = false;
     }
 
-    IEnumerator FadeOutPanelCoroutine()
+    IEnumerator FadeOutPanelCoroutine(float fadeTime)
     {
         fadeImage.enabled = true;
 
@@ -187,7 +146,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             this.fadeDeltaTime += Time.unscaledDeltaTime;
 
             // 透明度を決める
-            alpha = this.fadeDeltaTime / this.fadeInOutPanelTime;
+            alpha = this.fadeDeltaTime / fadeTime;
 
             if (alpha > 1)
             {
@@ -200,7 +159,7 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
             // 色を代入する
             fadeImage.color = color;
         }
-        while (this.fadeDeltaTime <= this.fadeInOutPanelTime);
+        while (this.fadeDeltaTime <= fadeTime);
     }
 
     // BGMの音量を徐々に上げる
@@ -311,23 +270,46 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         fadeOutItem.SetActive(false);
     }
 
+    // ゲーム画面からタイトル画面に戻るときのフェードアウト
+    IEnumerator FadeOutTitleCoroutine()
+    {
+        DestroyAdsToTitle();
+        var fadeOut = StartCoroutine(FadeOutPanelCoroutine(fadeOutSceneTime));
+        yield return fadeOut;
+        SceneManager.LoadScene("Title");
+    }
+
     // エンディングムービーに入るときのフェードアウト
     IEnumerator FadeOutEndingCoroutine()
     {
-        DestroyAds();
-        FadeOutPanel();
+        DestroyAdsToEnding();
+        FadeOutPanel(fadeInOutPanelTime);
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime + 1.0f);
         SceneManager.LoadScene("Ending");
         // インタースティシャル広告を表示させる
         AdBeforeEnding.Instance.ShowInterstitial();
     }
 
-    // AdMobの広告を削除する
-    void DestroyAds()
+    // AdMobの広告を削除する（タイトル画面に遷移するとき）
+    void DestroyAdsToTitle()
     {
         AdTop.Instance.Destroy();
         AdBottom.Instance.Destroy();
         AdMenu.Instance.Destroy();
+        AdHint.Instance.Destroy();
+        AdOpenGame.Instance.Destroy();
+        AdBeforeEnding.Instance.Destroy();
+    }
+
+
+    // AdMobの広告を削除する（エンディングに遷移するとき）
+    void DestroyAdsToEnding()
+    {
+        AdTop.Instance.Destroy();
+        AdBottom.Instance.Destroy();
+        AdMenu.Instance.Destroy();
+        AdHint.Instance.Destroy();
+        AdOpenGame.Instance.Destroy();
     }
 
     // 外部から呼び出される関数
@@ -337,21 +319,15 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
         StartCoroutine(coroutine);
     }
 
-    public void FadeOutScene(string nextScene)
-    {
-        IEnumerator coroutine = FadeOutSceneCoroutine(nextScene);
-        StartCoroutine(coroutine);
-    }
-
     public void FadeInPanel()
     {
         IEnumerator coroutine = FadeInPanelCoroutine();
         StartCoroutine(coroutine);
     }
 
-    public void FadeOutPanel()
+    public void FadeOutPanel(float fadeTime)
     {
-        IEnumerator coroutine = FadeOutPanelCoroutine();
+        IEnumerator coroutine = FadeOutPanelCoroutine(fadeTime);
         StartCoroutine(coroutine);
     }
 
@@ -382,6 +358,12 @@ public class FadeManager : SingletonMonoBehaviour<FadeManager>
     public void FadeOutItem(GameObject fadeOutItem)
     {
         IEnumerator coroutine = FadeOutItemCoroutine(fadeOutItem);
+        StartCoroutine(coroutine);
+    }
+
+    public void FadeOutTitle()
+    {
+        IEnumerator coroutine = FadeOutTitleCoroutine();
         StartCoroutine(coroutine);
     }
 

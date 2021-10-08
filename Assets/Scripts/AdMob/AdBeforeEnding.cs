@@ -34,6 +34,14 @@ public class AdBeforeEnding : SingletonMonoBehaviour<AdBeforeEnding>
         }
     }
 
+    public void Destroy()
+    {
+        if (this.interstitial != null)
+        {
+            this.interstitial.Destroy();
+        }
+    }
+
     public void ShowInterstitial()
     {
         // インタースティシャル広告の読み込みが完了していれば表示させる

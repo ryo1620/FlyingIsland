@@ -51,11 +51,8 @@ public class AdTop : SingletonMonoBehaviour<AdTop>
         string adUnitID = iosAdUnitID;        
 #endif
 
-        // Clean up banner ad before creating a new one.
-        if (this.bannerView != null)
-        {
-            Destroy();
-        }
+        // Clean up banner ad before creating a new one.        
+        Destroy();
 
         // 縦画面におけるアダプティブバナーのサイズを取得する
         AdSize adaptiveSize =
@@ -79,7 +76,10 @@ public class AdTop : SingletonMonoBehaviour<AdTop>
 
     public void Destroy()
     {
-        this.bannerView.Destroy();
+        if (this.bannerView != null)
+        {
+            this.bannerView.Destroy();
+        }
     }
 
     #region Banner callback handlers
@@ -123,7 +123,10 @@ public class AdTop : SingletonMonoBehaviour<AdTop>
         adLoaded = false;
 
         // 広告の読み込みに失敗してから非表示になるまでタイムラグがあるので隠しておく
-        this.bannerView.Hide();
+        if (this.bannerView != null)
+        {
+            this.bannerView.Hide();
+        }
 
         // 以下、ずらしたUIを元の位置に戻す処理        
         for (int i = 0; i < uiTop.Length; i++)

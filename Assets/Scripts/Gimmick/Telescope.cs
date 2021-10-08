@@ -141,7 +141,7 @@ public class Telescope : MonoBehaviour
 
     IEnumerator ShowRainbowCoroutine()
     {
-        FadeManager.Instance.FadeOutPanel();
+        FadeManager.Instance.FadeOutPanel(FadeManager.Instance.fadeInOutPanelTime);
 
         yield return new WaitForSeconds(FadeManager.Instance.fadeInOutPanelTime);
 

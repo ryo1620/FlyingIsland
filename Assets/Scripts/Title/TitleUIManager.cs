@@ -5,6 +5,7 @@ using UnityEngine;
 public class TitleUIManager : MonoBehaviour
 {
     // 表示させるUIを取得
+    public GameObject startButton;
     public GameObject continueButton;
     public GameObject startPanel;
 
@@ -20,11 +21,25 @@ public class TitleUIManager : MonoBehaviour
 
     void Start()
     {
-        // セーブデータがあれば「つづきから」ボタンを表示させる       
+        // セーブデータがあれば「はじめから」ボタンを下にずらし、「つづきから」ボタンを表示させる
         if (PlayerPrefs.HasKey(SAVE_KEY) == true)
         {
-            continueButton.SetActive(true);
+            MoveStartButtonDown();
+            ShowContinueButton();
         }
+    }
+
+    void MoveStartButtonDown()
+    {
+        Transform myTransform = startButton.transform;
+        Vector3 localPos = myTransform.localPosition;
+        localPos.y -= 84;
+        myTransform.localPosition = localPos;
+    }
+
+    void ShowContinueButton()
+    {
+        continueButton.SetActive(true);
     }
 
     public void OnStartButton()

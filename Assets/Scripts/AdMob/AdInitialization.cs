@@ -3,8 +3,9 @@ using GoogleMobileAds.Api;
 
 public class AdInitialization : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    // ゲーム起動後Awakeより前に一度だけ呼び出す
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void InitializeAds()
     {
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(initStatus => { });

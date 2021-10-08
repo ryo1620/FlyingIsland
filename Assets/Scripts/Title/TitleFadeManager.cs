@@ -29,13 +29,6 @@ public class TitleFadeManager : SingletonMonoBehaviour<TitleFadeManager>
     // Bgm（風音）のAudioSource用の変数を宣言する
     AudioSource windAudioSource;
 
-    // シーン切り替え時にデータを渡すためにTitleAdTopとTitleAdBottomのゲームオブジェクトを取得する
-    public GameObject titleAdTop;
-    public GameObject titleAdBottom;
-    // TitleAdTopとTitleAdBottomのスクリプト用の変数を宣言する
-    private TitleAdTop titleAdTopScript;
-    private TitleAdBottom titleAdBottomScript;
-
     // シーン切替時の処理で使う変数
     [System.NonSerialized] public bool adTopLoaded;
     [System.NonSerialized] public bool adBottomLoaded;
@@ -44,13 +37,19 @@ public class TitleFadeManager : SingletonMonoBehaviour<TitleFadeManager>
     [System.NonSerialized] public float adTopHeight;
     [System.NonSerialized] public float adBottomHeight;
 
+    public GameObject nowLoading;
+
+    // 非同期動作で使用するAsyncOperation
+    private AsyncOperation async;
+
+    // 読み込み率を表示するスライダー
+    public Slider slider;
+
     private void Start()
     {
         fadeImage = GetComponent<Image>();
         bgmAudioSource = bgm.GetComponent<AudioSource>();
         windAudioSource = wind.GetComponent<AudioSource>();
-        titleAdTopScript = titleAdTop.GetComponent<TitleAdTop>();
-        titleAdBottomScript = titleAdBottom.GetComponent<TitleAdBottom>();
     }
 
     private IEnumerator FadeInSceneCoroutine()
@@ -137,19 +136,62 @@ public class TitleFadeManager : SingletonMonoBehaviour<TitleFadeManager>
         }
         while (this.fadeDeltaTime <= this.fadeOutSceneTime);
 
+        // NowLoadingを表示
+        nowLoading.SetActive(true);
+
+        // 広告をロードするためのコルーチンを開始
+        var loadAds = StartCoroutine(LoadAds(3.0f));
+        yield return loadAds;
+        slider.value = 0.5f;
+
         // TitleAdTopスクリプトとTitleAdBottomスクリプトの各変数を代入する
-        adTopLoaded = titleAdTopScript.adLoaded;
-        adBottomLoaded = titleAdBottomScript.adLoaded;
-        adTopBannerView = titleAdTopScript.bannerView;
-        adBottomBannerView = titleAdBottomScript.bannerView;
-        adTopHeight = titleAdTopScript.adHeight;
-        adBottomHeight = titleAdBottomScript.adHeight;
+        adTopLoaded = TitleAdTop.Instance.adLoaded;
+        adBottomLoaded = TitleAdBottom.Instance.adLoaded;
+        adTopBannerView = TitleAdTop.Instance.bannerView;
+        adBottomBannerView = TitleAdBottom.Instance.bannerView;
+        adTopHeight = TitleAdTop.Instance.adHeight;
+        adBottomHeight = TitleAdBottom.Instance.adHeight;
 
         // イベントに登録
         SceneManager.sceneLoaded += GameSceneLoaded;
 
-        // 指定されたシーンに遷移する
-        SceneManager.LoadScene(nextScene);
+        // 次のシーンをロードするためのコルーチンを開始
+        StartCoroutine(LoadData(nextScene));
+    }
+
+    // 一定の秒数が経過するか、AdMobをロードするまでコルーチンの処理が行われる
+    IEnumerator LoadAds(float second)
+    {
+        float progressVal = 0;
+        float deltaTime = 0;
+
+        while (!TitleAdTop.Instance.adLoaded || !TitleAdBottom.Instance.adLoaded)
+        {
+            progressVal += Time.unscaledDeltaTime / second;
+            // AdMobのロード中はゲージを半分まで増やす
+            slider.value = progressVal / 2;
+            yield return null;
+            deltaTime += Time.unscaledDeltaTime;
+            // 一定の秒数を超えたらコルーチンを強制終了する
+            if (deltaTime >= second)
+            {
+                yield break;
+            }
+        }
+    }
+
+    IEnumerator LoadData(string nextScene)
+    {
+        // シーンの読み込みをする
+        async = SceneManager.LoadSceneAsync(nextScene);
+
+        // 読み込みが終わるまで進捗状況をスライダーの値に反映させる
+        while (!async.isDone)
+        {
+            var progressVal = Mathf.Clamp01(async.progress / 0.9f);
+            slider.value = progressVal / 2 + 0.5f;
+            yield return null;
+        }
     }
 
     // シーン切り替え時に呼ばれる関数
@@ -158,16 +200,14 @@ public class TitleFadeManager : SingletonMonoBehaviour<TitleFadeManager>
         // Titleシーンでアダプティブバナーをロードできた場合のみ処理を行う
         if (adTopLoaded == true)
         {
-            // シーン切り替え後のスクリプトを取得
-            var adTopScript = GameObject.FindWithTag("AdTop").GetComponent<AdTop>();
-
-            adTopScript.bannerView = adTopBannerView;
+            // シーン切り替え後の広告インスタンスに代入           
+            AdTop.Instance.bannerView = adTopBannerView;
 
             // シーン切替時にUIの位置調整をしておくことで、ユーザビリティを上げる
-            for (int i = 0; i < adTopScript.uiTop.Length; i++)
+            for (int i = 0; i < AdTop.Instance.uiTop.Length; i++)
             {
                 // UIのRect Transformを取得する
-                RectTransform myTransform = adTopScript.uiTop[i].GetComponent<RectTransform>();
+                RectTransform myTransform = AdTop.Instance.uiTop[i].GetComponent<RectTransform>();
 
                 // offsetMaxはxがright、yがtopに相当する
                 Vector2 Pos = myTransform.offsetMax;
@@ -182,18 +222,16 @@ public class TitleFadeManager : SingletonMonoBehaviour<TitleFadeManager>
                 }
             }
 
-            adTopScript.adLoaded = true;
+            AdTop.Instance.adLoaded = true;
         }
 
         if (adBottomLoaded == true)
         {
-            // シーン切り替え後のスクリプトを取得
-            var adBottomScript = GameObject.FindWithTag("AdBottom").GetComponent<AdBottom>();
-
-            adBottomScript.bannerView = adBottomBannerView;
+            // シーン切り替え後の広告インスタンスに代入      
+            AdBottom.Instance.bannerView = adBottomBannerView;
 
             // UIのRect Transformを取得する
-            RectTransform myTransform = adBottomScript.uiBottom.GetComponent<RectTransform>();
+            RectTransform myTransform = AdBottom.Instance.uiBottom.GetComponent<RectTransform>();
 
             // offsetMinはxがleft、yがbottomに相当する
             Vector2 Pos = myTransform.offsetMin;
@@ -207,7 +245,7 @@ public class TitleFadeManager : SingletonMonoBehaviour<TitleFadeManager>
                 myTransform.offsetMin = Pos;
             }
 
-            adBottomScript.adLoaded = true;
+            AdBottom.Instance.adLoaded = true;
         }
 
         // イベントから削除

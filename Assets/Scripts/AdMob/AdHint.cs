@@ -20,11 +20,6 @@ public class AdHint : SingletonMonoBehaviour<AdHint>
     private float elapsedTime;
     public float timeToReload;
 
-    // メニュー内広告を表示・非表示するためにAdMenuのゲームオブジェクトを取得する
-    public GameObject adMenu;
-    // AdMenuのスクリプト用の変数を宣言する
-    private AdMenu adMenuScript;
-
     // リワード広告が表示中かどうかを判定するための変数
     // インタースティシャル広告との競合を防ぐために使う
     [System.NonSerialized] public bool adShown;
@@ -45,9 +40,6 @@ public class AdHint : SingletonMonoBehaviour<AdHint>
     void Start()
     {
         CreateAndLoadRewardedAd();
-
-        // AdMenu（ゲームオブジェクト）のコンポーネント（AdMenuスクリプト）を変数に代入する
-        adMenuScript = adMenu.GetComponent<AdMenu>();
 
         uiManagerScript = uiManager.GetComponent<UIManager>();
         bgmAudioSource = bgm.GetComponent<AudioSource>();
@@ -71,13 +63,21 @@ public class AdHint : SingletonMonoBehaviour<AdHint>
     private void ShowAdMenu()
     {
         // メニュー内広告を表示する
-        adMenuScript.Show();
+        AdMenu.Instance.Show();
     }
 
     private void HideAdMenu()
     {
         // メニュー内広告を非表示にする
-        adMenuScript.Hide();
+        AdMenu.Instance.Hide();
+    }
+
+    public void Destroy()
+    {
+        if (this.rewardedAd != null)
+        {
+            this.rewardedAd.Destroy();
+        }
     }
 
     // UIManager.csで使う関数

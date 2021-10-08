@@ -5,7 +5,7 @@ using GoogleMobileAds.Api;
 // Gameシーン開始時、アダプティブバナーの表示にやや時間がかかり、UIの位置調整が遅れてしまう
 // そうなると広告を誤ってタップしてしまうなど、ユーザビリティの観点で問題がある
 // よって、Titleシーンであらかじめアダプティブバナーをロードしておく
-public class TitleAdBottom : MonoBehaviour
+public class TitleAdBottom : SingletonMonoBehaviour<TitleAdBottom>
 {
     // シーン切替時にTitleFadeManager.csで値を渡すためpublicにしておく
     public BannerView bannerView;
@@ -23,9 +23,19 @@ public class TitleAdBottom : MonoBehaviour
     [System.NonSerialized] public float ratio;
     [System.NonSerialized] public float adHeight;
 
-    void Start()
+    // シーンロード後、OnEnableの後に一度だけ呼び出す
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    void Init()
     {
         RequestBanner();
+    }
+
+    void Start()
+    {
+        if (adLoaded == false)
+        {
+            RequestBanner();
+        }
     }
 
     // 一定時間ごとに広告がロードされているかどうか確認し、ロードされていなければ再試行する
@@ -63,9 +73,6 @@ public class TitleAdBottom : MonoBehaviour
 
         this.bannerView = new BannerView(adUnitID, adaptiveSize, AdPosition.Bottom);
 
-        // タイトル画面では広告を非表示にする
-        this.bannerView.Hide();
-
         // Register for ad events.
         this.bannerView.OnAdLoaded += this.HandleAdLoaded;
         this.bannerView.OnAdFailedToLoad += this.HandleAdFailedToLoad;
@@ -78,6 +85,12 @@ public class TitleAdBottom : MonoBehaviour
 
         // Load a banner ad.
         this.bannerView.LoadAd(adRequest);
+
+        // タイトル画面では広告を非表示にする
+        if (this.bannerView != null)
+        {
+            this.bannerView.Hide();
+        }
     }
 
     #region Banner callback handlers

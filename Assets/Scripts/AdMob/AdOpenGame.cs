@@ -38,6 +38,14 @@ public class AdOpenGame : MonoBehaviour
         }
     }
 
+    public void Destroy()
+    {
+        if (ad != null)
+        {
+            ad.Destroy();
+        }
+    }
+
     public void OnApplicationPause(bool paused)
     {
         bool hintAdShown = AdHint.Instance.adShown;
